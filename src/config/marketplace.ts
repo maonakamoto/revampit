@@ -342,12 +342,6 @@ export function getSpecFiltersForCategory(categoryValue: string): SpecFilterDef[
   return SPEC_FILTER_CONFIG[categoryValue] || []
 }
 
-/**
- * @deprecated Use MARKETPLACE_CATEGORY_VALUES instead.
- * Backward-compatible alias — returns the same numeric ID array.
- */
-export const MARKETPLACE_CATEGORIES = MARKETPLACE_CATEGORY_VALUES
-
 // ============================================================================
 // Report Reasons
 // ============================================================================
