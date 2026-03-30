@@ -5,11 +5,11 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'RevampIT CMS API',
+      title: 'Revamp-IT CMS API',
       version: '1.0.0',
-      description: 'Content Management System API for RevampIT website',
+      description: 'Content Management System API for Revamp-IT website',
       contact: {
-        name: 'RevampIT Support',
+        name: 'Revamp-IT Support',
         email: 'empfang@revamp-it.ch',
       },
     },
