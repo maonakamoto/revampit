@@ -55,7 +55,7 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/nodemailer": "^7.0.1",
+    "@types/nodemailer": "^8.0.0",
     "@types/puppeteer": "^7.0.4",
     "@types/uuid": "^11.0.0",
     "@vercel/blob": "^2.3.1",
