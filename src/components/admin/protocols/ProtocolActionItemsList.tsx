@@ -6,6 +6,7 @@ import {
   ExternalLink,
   Vote,
   HelpCircle,
+  Sparkles,
 } from 'lucide-react'
 import Heading from '@/components/admin/AdminHeading'
 import {
@@ -88,11 +89,70 @@ export function ProtocolActionItemsList({
   const tasks = notes.action_items.filter(i => i.item_type === 'task')
   const decisions = notes.action_items.filter(i => i.item_type === 'decision')
   const openQuestions = notes.action_items.filter(i => i.item_type === 'info')
+  const openDecisionCount = decisions.filter(d => {
+    const outcome = decisionOutcomes.find(o => o.action_item_id === d.id)
+    return !outcome?.is_closed
+  }).length
 
   const canAct = isReview || isFinalized
+  const showSummaryBanner = canAct && notes.action_items.length > 0
 
   return (
     <div id="protocol-step-tasks" className="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-white/[0.08] overflow-hidden">
+
+      {/* Summary banner — surfaces total counts + the single bulk-create CTA. */}
+      {showSummaryBanner && (
+        <div className="px-4 py-4 border-b border-neutral-100 dark:border-white/[0.06] bg-primary-50/50 dark:bg-primary-900/10 space-y-3">
+          <div className="flex items-start gap-3">
+            <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5 flex-shrink-0" aria-hidden />
+            <div className="flex-1 min-w-0 space-y-1">
+              <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                KI hat erkannt:{' '}
+                {tasks.length > 0 && (
+                  <span className="text-primary-700 dark:text-primary-300">
+                    {tasks.length} {tasks.length === 1 ? 'Aufgabe' : 'Aufgaben'}
+                  </span>
+                )}
+                {tasks.length > 0 && (decisions.length > 0 || openQuestions.length > 0) && ' · '}
+                {decisions.length > 0 && (
+                  <span className="text-violet-700 dark:text-violet-300">
+                    {decisions.length} {decisions.length === 1 ? 'Entscheidung' : 'Entscheidungen'}
+                  </span>
+                )}
+                {decisions.length > 0 && openQuestions.length > 0 && ' · '}
+                {openQuestions.length > 0 && (
+                  <span className="text-neutral-700 dark:text-neutral-300">
+                    {openQuestions.length} Info
+                  </span>
+                )}
+              </p>
+              <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                {unlinkedTaskItems.length > 0 && (
+                  <>Erstelle alle Aufgaben mit einem Klick. </>
+                )}
+                {openDecisionCount > 0 && (
+                  <>Entscheidungen sind offen — Teilnehmer können unten direkt abstimmen.</>
+                )}
+                {unlinkedTaskItems.length === 0 && openDecisionCount === 0 && (
+                  <>Alle Aufgaben verknüpft, alle Entscheidungen geschlossen.</>
+                )}
+              </p>
+            </div>
+            {unlinkedTaskItems.length > 0 && (
+              <button
+                onClick={onCreateAllTasks}
+                disabled={bulkCreatingTasks}
+                className="flex-shrink-0 text-sm px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 transition-colors font-medium gap-2 inline-flex items-center"
+              >
+                {bulkCreatingTasks
+                  ? <><Loader2 className="w-4 h-4 animate-spin" />Erstellt…</>
+                  : <><ListChecks className="w-4 h-4" />Alle {unlinkedTaskItems.length} {unlinkedTaskItems.length === 1 ? 'Aufgabe' : 'Aufgaben'} erstellen</>
+                }
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <div className="px-4 py-3 border-b border-neutral-100 dark:border-white/[0.06] flex items-center justify-between gap-3">
@@ -105,18 +165,6 @@ export function ProtocolActionItemsList({
             {notes.action_items.length}
           </span>
         </div>
-        {unlinkedTaskItems.length > 0 && canAct && (
-          <button
-            onClick={onCreateAllTasks}
-            disabled={bulkCreatingTasks}
-            className="text-xs px-3 py-1.5 rounded-lg border border-primary-300 dark:border-primary-700 text-primary-700 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 disabled:opacity-50 transition-colors"
-          >
-            {bulkCreatingTasks
-              ? <><Loader2 className="w-3 h-3 animate-spin inline mr-1" />Erstellt…</>
-              : `${unlinkedTaskItems.length} Aufgaben erstellen`
-            }
-          </button>
-        )}
       </div>
 
       {bulkTaskErrors.length > 0 && (
