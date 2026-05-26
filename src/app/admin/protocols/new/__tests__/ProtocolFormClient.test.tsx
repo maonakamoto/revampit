@@ -43,7 +43,8 @@ describe('ProtocolFormClient', () => {
       target: { value: 'team_weekly' },
     })
 
-    // Step 2: Content — enter transcript
+    // Step 2: Content — pick "Einfügen" tile to reveal the textarea, then enter transcript
+    fireEvent.click(await screen.findByRole('button', { name: /Einfügen/i }))
     const textarea = await screen.findByLabelText(/Transkript oder Notizen/i)
     fireEvent.change(textarea, {
       target: { value: 'Dies ist ein genügend langes Transkript für die Verarbeitung mit mehr als fünfzig Zeichen.' },

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { Loader2, Upload, Mic, FileText, Users, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import { MEETING_TYPE_LABELS, PROTOCOL_VISIBILITY_LABELS } from '@/config/protocols'
 import type { MeetingType, ProtocolVisibility } from '@/config/protocols'
@@ -13,6 +14,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select } from '@/components/ui/select'
 import { FormField } from '@/components/ui/form-field'
 import { Button } from '@/components/ui/button'
+
+type InputMode = 'record' | 'upload' | 'paste' | null
 
 interface ProtocolFormClientProps {
   teamMembers: Array<{ id: string; name: string }>
@@ -41,6 +44,14 @@ export default function ProtocolFormClient({ teamMembers }: ProtocolFormClientPr
     handleFileUpload,
     handleSubmit,
   } = useProtocolForm(teamMembers)
+
+  const [mode, setMode] = useState<InputMode>(null)
+
+  const resetInput = () => {
+    setMode(null)
+    setAudioFile(null)
+    handleContentChange('')
+  }
 
   return (
     <div className="max-w-3xl space-y-6">
@@ -169,37 +180,51 @@ export default function ProtocolFormClient({ teamMembers }: ProtocolFormClientPr
         <div className="bg-white rounded-lg border p-6 space-y-4">
           <Heading level={2} className="text-lg font-semibold text-neutral-900">Inhalt</Heading>
           <p className="text-sm text-neutral-600">
-            Transkript, Notizen einfügen oder Audio-Datei hochladen. Die KI strukturiert den Inhalt automatisch.
+            Wie möchtest du den Sitzungsinhalt bereitstellen? Wähle eine der drei Möglichkeiten — die KI strukturiert den Inhalt anschliessend automatisch.
           </p>
 
-          <FormField label="Transkript oder Notizen" htmlFor="content">
-            <Textarea
-              id="content"
-              value={content}
-              onChange={(e) => handleContentChange(e.target.value)}
-              placeholder="Sitzungsnotizen hier einfügen..."
-              rows={10}
-              disabled={!!audioFile}
-              className="font-mono text-sm disabled:!opacity-100 disabled:bg-neutral-100 disabled:text-neutral-500"
-            />
-            <div className="flex items-center justify-between mt-1">
-              <div className="flex items-center gap-2">
-                {contentFormat && (
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${contentFormat === 'json' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : 'bg-neutral-100 text-neutral-600'}`}>
-                    {contentFormat === 'json' ? 'JSON erkannt' : 'Freitext'}
-                  </span>
-                )}
-              </div>
-              <span className="text-xs text-neutral-500">{content.length} Zeichen</span>
+          {/* Mode picker — visible while no mode chosen */}
+          {mode === null && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <ModeTile
+                icon={Mic}
+                title="Aufnehmen"
+                description="Sitzung direkt im Browser aufnehmen — Mikrofon erforderlich."
+                onClick={() => setMode('record')}
+              />
+              <ModeTile
+                icon={Upload}
+                title="Hochladen"
+                description="Audioaufnahme oder Textdatei (.txt, .json, .mp3, .wav, .m4a)."
+                onClick={() => setMode('upload')}
+              />
+              <ModeTile
+                icon={FileText}
+                title="Einfügen"
+                description="Transkript oder Notizen aus der Zwischenablage einfügen."
+                onClick={() => setMode('paste')}
+              />
             </div>
-          </FormField>
+          )}
 
-          {/* File Upload */}
-          <div className="border-t pt-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Oder Datei hochladen
-              </label>
+          {/* Record mode */}
+          {mode === 'record' && !audioFile && (
+            <div className="space-y-3">
+              <AudioRecorderInline
+                onRecorded={(file) => setAudioFile(file)}
+                disabled={loading || processing}
+              />
+              <SwitchModeLink onClick={resetInput} />
+            </div>
+          )}
+
+          {/* Upload mode */}
+          {mode === 'upload' && !audioFile && !content.trim() && (
+            <div className="rounded-lg border border-neutral-200 p-4 space-y-3 dark:border-white/[0.08]">
+              <div className="flex items-center gap-2 text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                <Upload className="w-4 h-4" aria-hidden />
+                Datei hochladen
+              </div>
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 cursor-pointer transition-colors text-sm">
                   <Upload className="w-4 h-4" />
@@ -213,50 +238,72 @@ export default function ProtocolFormClient({ teamMembers }: ProtocolFormClientPr
                 </label>
                 <span className="text-xs text-neutral-500">.txt, .json, .mp3, .wav, .m4a, .webm</span>
               </div>
+              <SwitchModeLink onClick={resetInput} />
             </div>
+          )}
 
-            {!audioFile && !content.trim() && (
-              <AudioRecorderInline
-                onRecorded={(file) => setAudioFile(file)}
-                disabled={loading || processing}
-              />
-            )}
-
-            {audioFile && (
-              <div className="mt-3 p-3 bg-neutral-50 border border-neutral-200 rounded-lg">
-                <div className="flex items-center justify-between">
+          {/* Paste mode */}
+          {mode === 'paste' && !audioFile && (
+            <div className="space-y-2">
+              <FormField label="Transkript oder Notizen" htmlFor="content">
+                <Textarea
+                  id="content"
+                  value={content}
+                  onChange={(e) => handleContentChange(e.target.value)}
+                  placeholder="Sitzungsnotizen hier einfügen..."
+                  rows={10}
+                  className="font-mono text-sm"
+                />
+                <div className="flex items-center justify-between mt-1">
                   <div className="flex items-center gap-2">
-                    <Mic className="w-4 h-4 text-primary-600" />
-                    <span className="text-sm font-medium text-neutral-800">{audioFile.name}</span>
-                    <span className="text-xs text-primary-600">({(audioFile.size / 1024 / 1024).toFixed(1)} MB)</span>
+                    {contentFormat && (
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${contentFormat === 'json' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : 'bg-neutral-100 text-neutral-600'}`}>
+                        {contentFormat === 'json' ? 'JSON erkannt' : 'Freitext'}
+                      </span>
+                    )}
                   </div>
-                  <button
-                    onClick={() => setAudioFile(null)}
-                    className="text-xs text-primary-600 hover:text-primary-800"
-                  >
-                    Entfernen
-                  </button>
+                  <span className="text-xs text-neutral-500">{content.length} Zeichen</span>
                 </div>
+              </FormField>
+              <SwitchModeLink onClick={resetInput} />
+            </div>
+          )}
 
-                {/* Whisper model selector — compact inline styling inside audio panel */}
-                <div className="mt-2">
-                  <label htmlFor="whisper_model" className="block text-xs font-medium text-neutral-700 mb-1">
-                    Whisper-Modell
-                  </label>
-                  <Select
-                    id="whisper_model"
-                    value={whisperModel}
-                    onChange={(e) => setWhisperModel(e.target.value)}
-                    className="py-1 text-xs"
-                  >
-                    {WHISPER_MODELS.map((model) => (
-                      <option key={model.id} value={model.id}>{model.label}</option>
-                    ))}
-                  </Select>
+          {/* Attached audio file — shown for both record + upload completions */}
+          {audioFile && (
+            <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 space-y-3 dark:bg-white/[0.04] dark:border-white/[0.08]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Mic className="w-4 h-4 text-primary-600" />
+                  <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{audioFile.name}</span>
+                  <span className="text-xs text-primary-600">({(audioFile.size / 1024 / 1024).toFixed(1)} MB)</span>
                 </div>
+                <button
+                  type="button"
+                  onClick={resetInput}
+                  className="text-xs text-primary-600 hover:text-primary-800"
+                >
+                  Entfernen
+                </button>
               </div>
-            )}
-          </div>
+
+              <div>
+                <label htmlFor="whisper_model" className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                  Whisper-Modell
+                </label>
+                <Select
+                  id="whisper_model"
+                  value={whisperModel}
+                  onChange={(e) => setWhisperModel(e.target.value)}
+                  className="py-1 text-xs"
+                >
+                  {WHISPER_MODELS.map((model) => (
+                    <option key={model.id} value={model.id}>{model.label}</option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+          )}
 
           {/* Submit */}
           <div className="flex items-center justify-between pt-4 border-t">
@@ -294,3 +341,40 @@ export default function ProtocolFormClient({ teamMembers }: ProtocolFormClientPr
     </div>
   )
 }
+
+function ModeTile({
+  icon: Icon,
+  title,
+  description,
+  onClick,
+}: {
+  icon: typeof Mic
+  title: string
+  description: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="text-left rounded-lg border border-neutral-200 p-4 hover:border-primary-400 hover:bg-primary-50 transition-colors space-y-2 dark:border-white/[0.08] dark:hover:border-primary-500 dark:hover:bg-primary-900/10"
+    >
+      <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" aria-hidden />
+      <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{title}</div>
+      <div className="text-xs text-neutral-600 dark:text-neutral-400">{description}</div>
+    </button>
+  )
+}
+
+function SwitchModeLink({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="text-xs text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+    >
+      Andere Eingabe wählen
+    </button>
+  )
+}
+
