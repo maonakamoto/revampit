@@ -3442,7 +3442,9 @@
       "closeAriaLabel": "Chiudi il carrello",
       "paymentSuccess": "Pagamento riuscito! Il tuo ordine è confermato.",
       "paymentFailed": "Pagamento non riuscito. Riprova.",
-      "paymentCancelled": "Pagamento annullato."
+      "paymentCancelled": "Pagamento annullato.",
+      "unavailableRemoved": "«{title}» non è più disponibile ed è stato rimosso dal carrello.",
+      "unavailableRemovedMany": "{count} articoli non sono più disponibili e sono stati rimossi dal carrello."
     },
     "aiCamera": {
       "analyzing": "Analisi del prodotto in corso...",
@@ -8664,7 +8666,10 @@
       "errorUpdateStatus": "Impossibile aggiornare lo stato",
       "networkError": "Errore di rete",
       "articlesSection": "Articoli ({count})",
-      "moreItems": "+{count} altri"
+      "moreItems": "+{count} altri",
+      "prevPage": "Indietro",
+      "nextPage": "Avanti",
+      "paginationCurrentPage": "Pagina {page}"
     },
     "listings": {
       "pageTitle": "I miei annunci",

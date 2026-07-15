@@ -1139,7 +1139,9 @@
       "paymentCancelled": "Payment cancelled.",
       "revampitOnly": "Only Revamp-IT devices can be added to the cart. Community listings are purchased directly.",
       "cartAriaLabel": "Cart, {count} items",
-      "closeAriaLabel": "Close cart"
+      "closeAriaLabel": "Close cart",
+      "unavailableRemoved": "\"{title}\" is no longer available and was removed from your cart.",
+      "unavailableRemovedMany": "{count} items are no longer available and were removed from your cart."
     },
     "aiCamera": {
       "analyzing": "Analyzing product...",
@@ -8663,7 +8665,10 @@
       "errorUpdateStatus": "Could not update status",
       "networkError": "Network error",
       "articlesSection": "Items ({count})",
-      "moreItems": "+{count} more"
+      "moreItems": "+{count} more",
+      "prevPage": "Back",
+      "nextPage": "Next",
+      "paginationCurrentPage": "Page {page}"
     },
     "listings": {
       "pageTitle": "My Listings",

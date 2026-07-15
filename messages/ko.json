@@ -3442,7 +3442,9 @@
       "closeAriaLabel": "장바구니 닫기",
       "paymentSuccess": "결제가 완료되었습니다! 주문이 확정되었습니다.",
       "paymentFailed": "결제에 실패했습니다. 다시 시도해 주세요.",
-      "paymentCancelled": "결제가 취소되었습니다."
+      "paymentCancelled": "결제가 취소되었습니다.",
+      "unavailableRemoved": "\"{title}\"은(는) 더 이상 구매할 수 없어 장바구니에서 제거되었습니다.",
+      "unavailableRemovedMany": "{count}개 상품이 더 이상 구매할 수 없어 장바구니에서 제거되었습니다."
     },
     "aiCamera": {
       "analyzing": "제품 분석 중...",
@@ -8664,7 +8666,10 @@
       "errorUpdateStatus": "상태를 업데이트할 수 없습니다",
       "networkError": "네트워크 오류",
       "articlesSection": "품목 ({count})",
-      "moreItems": "+{count}개 더"
+      "moreItems": "+{count}개 더",
+      "prevPage": "이전",
+      "nextPage": "다음",
+      "paginationCurrentPage": "페이지 {page}"
     },
     "listings": {
       "pageTitle": "내 상품",

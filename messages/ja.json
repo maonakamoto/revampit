@@ -3442,7 +3442,9 @@
       "closeAriaLabel": "カートを閉じる",
       "paymentSuccess": "お支払いが完了しました！ご注文が確定しました。",
       "paymentFailed": "お支払いに失敗しました。もう一度お試しください。",
-      "paymentCancelled": "お支払いがキャンセルされました。"
+      "paymentCancelled": "お支払いがキャンセルされました。",
+      "unavailableRemoved": "「{title}」は在庫がなくなったため、カートから削除されました。",
+      "unavailableRemovedMany": "{count} 点の商品が在庫切れのため、カートから削除されました。"
     },
     "aiCamera": {
       "analyzing": "製品を分析中...",
@@ -8664,7 +8666,10 @@
       "errorUpdateStatus": "ステータスを更新できませんでした",
       "networkError": "ネットワークエラー",
       "articlesSection": "商品（{count}）",
-      "moreItems": "他{count}件"
+      "moreItems": "他{count}件",
+      "prevPage": "前へ",
+      "nextPage": "次へ",
+      "paginationCurrentPage": "ページ {page}"
     },
     "listings": {
       "pageTitle": "マイ出品",

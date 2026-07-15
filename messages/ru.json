@@ -978,7 +978,9 @@
       "closeAriaLabel": "Закрыть корзину",
       "paymentSuccess": "Оплата прошла успешно! Ваш заказ подтверждён.",
       "paymentFailed": "Оплата не удалась. Пожалуйста, попробуйте ещё раз.",
-      "paymentCancelled": "Оплата отменена."
+      "paymentCancelled": "Оплата отменена.",
+      "unavailableRemoved": "«{title}» больше недоступен и был удалён из корзины.",
+      "unavailableRemovedMany": "{count} товаров больше недоступны и были удалены из корзины."
     },
     "checkout": {
       "loading": "Загрузка...",
@@ -8659,7 +8661,10 @@
       "errorUpdateStatus": "Не удалось обновить статус",
       "networkError": "Ошибка сети",
       "articlesSection": "Товары ({count})",
-      "moreItems": "+{count} ещё"
+      "moreItems": "+{count} ещё",
+      "prevPage": "Назад",
+      "nextPage": "Далее",
+      "paginationCurrentPage": "Страница {page}"
     },
     "listings": {
       "pageTitle": "Мои объявления",

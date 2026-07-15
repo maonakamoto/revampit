@@ -1145,7 +1145,9 @@
       "paymentCancelled": "Zahlung abgebrochen.",
       "revampitOnly": "Nur Revamp-IT-Geräte können in den Warenkorb. Community-Inserate werden direkt gekauft.",
       "cartAriaLabel": "Warenkorb, {count} Artikel",
-      "closeAriaLabel": "Warenkorb schliessen"
+      "closeAriaLabel": "Warenkorb schliessen",
+      "unavailableRemoved": "«{title}» ist nicht mehr verfügbar und wurde aus dem Warenkorb entfernt.",
+      "unavailableRemovedMany": "{count} Artikel sind nicht mehr verfügbar und wurden aus dem Warenkorb entfernt."
     }
   },
   "services": {
@@ -8705,7 +8707,10 @@
       "errorLoading": "Fehler beim Laden der Bestellung",
       "errorConfirmReceipt": "Empfang konnte nicht bestätigt werden",
       "errorUpdateStatus": "Status konnte nicht aktualisiert werden",
-      "networkError": "Netzwerkfehler"
+      "networkError": "Netzwerkfehler",
+      "prevPage": "Zurück",
+      "nextPage": "Weiter",
+      "paginationCurrentPage": "Seite {page}"
     },
     "listings": {
       "pageTitle": "Meine Inserate",

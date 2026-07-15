@@ -1139,7 +1139,9 @@
       "closeAriaLabel": "Fermer le panier",
       "paymentSuccess": "Paiement réussi ! Ta commande est confirmée.",
       "paymentFailed": "Le paiement a échoué. Merci de réessayer.",
-      "paymentCancelled": "Paiement annulé."
+      "paymentCancelled": "Paiement annulé.",
+      "unavailableRemoved": "«{title}» n'est plus disponible et a été retiré du panier.",
+      "unavailableRemovedMany": "{count} articles ne sont plus disponibles et ont été retirés du panier."
     },
     "aiCamera": {
       "analyzing": "Analyse du produit en cours...",
@@ -8664,7 +8666,10 @@
       "errorUpdateStatus": "Impossible de mettre à jour le statut",
       "networkError": "Erreur réseau",
       "articlesSection": "Articles ({count})",
-      "moreItems": "+{count} de plus"
+      "moreItems": "+{count} de plus",
+      "prevPage": "Retour",
+      "nextPage": "Suivant",
+      "paginationCurrentPage": "Page {page}"
     },
     "listings": {
       "pageTitle": "Mes annonces",
