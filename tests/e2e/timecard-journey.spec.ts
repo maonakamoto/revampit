@@ -72,7 +72,8 @@ test.describe('Timecard staff journey', () => {
     expect(resubmitted.status).toBe('submitted')
 
     await loginWithCredentials(page, '/admin/zeiterfassung', ADMIN_TEST_EMAIL, ADMIN_TEST_PASSWORD)
-    await expect(page.getByRole('heading', { name: 'Zeitkarten' })).toBeVisible({ timeout: 15000 })
+    // The page's H1 is "Zeiterfassung"; "Zeitkarten" moved to the approvals page.
+    await expect(page.getByRole('heading', { name: 'Zeiterfassung' })).toBeVisible({ timeout: 15000 })
 
     await approveTimecardAsAdmin(page.request, submitted.id)
     const afterApprove = await fetchCurrentTimecard(page.request)
