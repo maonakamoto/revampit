@@ -53,7 +53,9 @@ test.describe('Timecard staff journey', () => {
     }
 
     await submitButton.click()
-    await expect(page.getByText(/Freigabe-Team wird benachrichtigt|Zur Prüfung gesendet/i)).toBeVisible({
+    // .first(): the submitted state renders "Zur Prüfung gesendet" in two
+    // places (status banner + summary line) — either being visible suffices.
+    await expect(page.getByText(/Freigabe-Team wird benachrichtigt|Zur Prüfung gesendet/i).first()).toBeVisible({
       timeout: 20000,
     })
 
